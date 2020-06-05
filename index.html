@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百安居年中大促</title>
+    <script type="text/javascript" src="./js/requestAnimationFrame.js"></script>
+    <script type="text/javascript" src="./js/Lottery.js"></script>
+</head>
+<body>
+    <div class="lottery-wrap">
+        <img class="pointer" src="./抽奖指针@2x.png" alt="pointer" onclick="handleClick()">
+        <img class="bg" src="./转盘切图@2x.png" alt="background">
+    </div>
+</body>
+<script>
+    const element = document.getElementsByClassName('bg')[0];
+    const lottery = new Lottery(element, 0, 0.01, 5, 1, 6);
+
+    function handleClick() {
+        lottery.setResult(5);
+        lottery.run();
+    }
+</script>
+<style>
+    html, body{
+        width: 80%;
+        height: 100%;
+    }
+    .lottery-wrap{
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .pointer{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    .bg{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: auto;
+    }
+
+    .rotate{
+        animation: run 5s ease-in;
+    }
+
+    @keyframes run{
+        from{     
+            transform: translate(-50%, -50%) rotate(0);
+            -webkit-transform: translate(-50%, -50%) rotate(0);     
+        }     
+        to{
+            transform: translate(-50%, -50%) rotate(360deg);
+            -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+</style>
+</html>

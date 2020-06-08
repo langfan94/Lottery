@@ -1,23 +1,27 @@
 // el 转盘dom
 // initSpeed 初始速度
 // accelerate 加速度
+// decelerate 减速度
 // maxSpeed 加速时最大速度
 // minSpeed 减速时最小速度
 // areaNumber 分为几块
+// delayTime 延迟多久开始减速
 
-function Lottery(el, initSpeed, accelerate, maxSpeed, minSpeed, areaNumber) {
+function Lottery(el, options) {
     let reId;
     let startTime = null;
     this.el = el;
-    this.speed = initSpeed;
-    this.accelerate = accelerate;
-    this.maxSpeed = maxSpeed;
-    this.minSpeed = minSpeed;
-    this.areaNumber = areaNumber;
+    this.speed = options.initSpeed;
+    this.accelerate = options.accelerate;
+    this.decelerate = options.decelerate;
+    this.maxSpeed = options.maxSpeed;
+    this.minSpeed = options.minSpeed;
+    this.areaNumber = options.areaNumber;
+    this.delayTime = options.delayTime;
     this.singleAngle = 360 / this.areaNumber;
     this.rotateAngle = 0;
     this.endAngle = null;
-    let flag = 0;  // 0 加速; 1减速； 2停止;
+    let flag = 1;  // 0 停止; 1加速； -1减速;
     const _this = this;
 
     this.getAccSpeed = function() {
@@ -30,7 +34,7 @@ function Lottery(el, initSpeed, accelerate, maxSpeed, minSpeed, areaNumber) {
     }
 
     this.getSlowSpeed = function() {
-        this.speed = this.speed - this.accelerate;
+        this.speed = this.speed - this.decelerate;
         if (this.speed < this.minSpeed) {
             this.speed = this.minSpeed;
         }
@@ -59,14 +63,16 @@ function Lottery(el, initSpeed, accelerate, maxSpeed, minSpeed, areaNumber) {
         _this.rotateAngle = angle;
 
         setTimeout(() => {
-            flag = 1;
-        }, 5000);
+            flag = -1;
+        }, _this.delayTime);
 
-        if (flag === 0) {
+        console.log('flag', flag, _this.delayTime);
+
+        if (flag === 1) {
             _this.quicker();
             console.log('_this.rotateAngle', _this.rotateAngle);
         }
-        if (flag === 1) {
+        if (flag === -1) {
             _this.slower();
             console.log('_this.rotateAngle', _this.rotateAngle, _this.endAngle);
             if (Math.abs(_this.rotateAngle - _this.endAngle) < 1 && _this.speed === _this.minSpeed) {
@@ -76,7 +82,7 @@ function Lottery(el, initSpeed, accelerate, maxSpeed, minSpeed, areaNumber) {
             }
         }
 
-        if (flag === 2) {
+        if (flag === 0) {
             return _this.stop();
         }
 
@@ -95,9 +101,16 @@ function Lottery(el, initSpeed, accelerate, maxSpeed, minSpeed, areaNumber) {
             reId = null;
             startTime = null;
             this.el = el;
-            this.speed = initSpeed;
-            this.accelerate = accelerate;
-            this.maxSpeed = maxSpeed;
+            this.speed = options.initSpeed;
+            this.accelerate = options.accelerate;
+            this.maxSpeed = options.maxSpeed;
+            this.minSpeed = options.minSpeed;
+            this.areaNumber = options.areaNumber;
+            this.delayTime = options.delayTime;
+            this.singleAngle = 360 / this.areaNumber;
+            this.rotateAngle = 0;
+            this.endAngle = null;
+            let flag = 1;  // 0 停止; 1加速； -1减速;
             cancelAnimationFrame(reId);
         }
     }

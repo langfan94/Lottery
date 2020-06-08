@@ -15,10 +15,18 @@
 </body>
 <script>
     const element = document.getElementsByClassName('bg')[0];
-    const lottery = new Lottery(element, 0, 0.01, 5, 1, 6);
+    const lottery = new Lottery(element, {
+        initSpeed: 0,
+        accelerate: 0.01,
+        decelerate: 0.03,
+        maxSpeed: 20,
+        minSpeed: 1,
+        areaNumber: 6,
+        delayTime: 7000,
+    });
 
     function handleClick() {
-        lottery.setResult(5);
+        lottery.setResult(1);
         lottery.run();
     }
 </script>
